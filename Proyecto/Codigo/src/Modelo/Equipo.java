@@ -13,7 +13,14 @@ public class Equipo {
     public Equipo() {
     }
 
-    public Equipo(String idEquipo, String nombre, LocalDate fechaFund) {
+
+    public Equipo(String idEquipo, LocalDate fechaFund, String nombre) {
+        this.idEquipo = idEquipo;
+        this.fechaFund = fechaFund;
+        this.nombre = nombre;
+    }
+
+    public Equipo(String idEquipo, String nombre, LocalDate fechaFund, ArrayList<Jugador> listaJugadores, ArrayList<Enfrentamiento> listaEnfrentamientos) {
         this.idEquipo = idEquipo;
         this.nombre = nombre;
         this.fechaFund = fechaFund;
