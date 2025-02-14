@@ -7,6 +7,7 @@ import Modelo.EquipoDAO;
 import javax.swing.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,13 +17,14 @@ public class EquipoController {
     public EquipoController(EquipoDAO equipoDAO) {
     }
 
+
     public Equipo solicitarValidarDatos() {
         // Copia de la versión anterior.
         String idEquipo = solicitarDato("ID", "Teclea el ID del equipo", "^[A-Z]{1}[0-9]{3}$");
         String nombre = solicitarDato("Nombre","Teclea el nombre del equipo","^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\\\s]{3,15}$");
         LocalDate fechaFund = solicitarFecha();
 
-        Equipo e = new Equipo(idEquipo, nombre, fechaFund);
+        Equipo e = new Equipo(idEquipo,fechaFund,nombre);
         return e;
     }
 
@@ -84,6 +86,28 @@ public class EquipoController {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al borrar el equipo");
         }
+
+    }
+    public Equipo modificarEquipo(){
+        Equipo eq = null;
+        try {
+
+            String id = JOptionPane.showInputDialog("Ingrese el id del equipo que desea modificar");
+            Optional<Equipo> equipoToModify = listaEquipos.stream()
+                    .filter(equipo -> equipo.getIdEquipo().equals(id))
+                    .findFirst();
+            if (equipoToModify.isPresent()) {
+
+                String nombre = solicitarDato("Nombre", "Teclea el nombre del equipo", "^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\\\s]{3,15}$");
+                LocalDate fechaFund = solicitarFecha();
+                eq = new Equipo(id,fechaFund,nombre);
+                EquipoDAO.agregadorModificarEquipo(eq);
+
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Error al modificar el equipo");
+        }
+        return eq;
 
     }
 }
