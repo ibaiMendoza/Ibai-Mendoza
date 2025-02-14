@@ -64,19 +64,6 @@ public class JugadorController {
         return fecha;
     }
 
-    public static void altaJugador() {
-        boolean continuar = false;
-        do {
-            try {
-                Jugador jugador = solicitarValidarDatos();
-                EquipoDAO.agregarJugador(jugador);
-
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        } while (continuar);
-    }
-
     public static void bajaJugador(){
         boolean continuar = false;
         do {
@@ -95,36 +82,27 @@ public class JugadorController {
 
     public static Jugador modificarJugador() {
         boolean continuar = false;
+        Jugador j=null;
         do {
             try {
                 String idJugador = JOptionPane.showInputDialog("Introduzca el id del jugador a modificar");
                 Jugador jugadorM = EquipoDAO.buscarJugador(idJugador);
                 String nombre = solicitarDato("Nombre", "Teclea el nombre del jugador", "^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s]*$");
-                jugadorM.setNombre(nombre);
                 String apellido = solicitarDato("Apellido","Teclea el apellido del jugador","^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s]*$");
-                jugadorM.setApellido(apellido);
                 String nacionalidad = solicitarDato("Nacionalidad","Teclea la nacionalidad del jugador","^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]*$");
-                jugadorM.setNacionalidad(nacionalidad);
                 LocalDate fechaNacimiento = solicitarFecha();
-                jugadorM.setFechaNacimiento(fechaNacimiento);
                 String nickname = solicitarDato("Nickname","Teclea el nickname del jugador","^[a-zA-Z0-9_]{4,}$");
-                jugadorM.setNombre(nickname);
                 String rol = solicitarDato("Rol","Teclea el rol del jugador","^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s]{3,}$");
-                jugadorM.setRol(rol);
                 Double sueldo = Double.valueOf(solicitarDato("Sueldo", "Tecle el sueldo del jugador", "^[0-9]{5}$"));
-                jugadorM.setSueldo(sueldo);
                 String idEquipo = solicitarDato("ID", "Teclea el ID del equipo al que pertenece", "^[A-Z]{1}[0-9]{3}$");
                 Equipo equipo = EquipoDAO.buscarEquipo(idEquipo);
-                jugadorM.setEquipo(equipo);
-
-                JugadorDAO.actualizarJugador(jugadorM);
-
+                j = new Jugador(idJugador, nombre, apellido, nacionalidad, fechaNacimiento, nickname, rol, sueldo, equipo);
 
             } catch (Exception e) {
-                e.getMessage();
+                JOptionPane.showMessageDialog(null, "Error al modificar el jugador");
             }
         } while (continuar);
-        return null;
+        return j;
     }
 
 
