@@ -63,6 +63,18 @@ public class JugadorController {
         LocalDate fecha = LocalDate.parse(fechaS, formatter);
         return fecha;
     }
+    public static void altaJugador() {
+        boolean continuar = false;
+        do {
+            try {
+                Jugador jugador = solicitarValidarDatos();
+                JugadorDAO.agregarJugador(jugador);
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } while (continuar);
+    }
 
     public static void bajaJugador(){
         boolean continuar = false;
